@@ -36,15 +36,6 @@ const useSendRequisition = () => {
                 case Method.GET:
                     response = await api.get(endpoint, config)
                 break;
-                case Method.POST:
-                    response = await api.post(endpoint, data, config)
-                break;
-                case Method.PUT:
-                    response = await api.put(endpoint, data, config)
-                break;
-                case Method.DELETE:
-                    response = await api.delete(endpoint, config)
-                break;
             }
         } catch (e: any) {
             response = e.response;
