@@ -6,9 +6,10 @@ const useStylesItemWord = () => {
     const styles = StyleSheet.create({
         container: {
             flexDirection: 'row',
+            alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
-            paddingVertical: 18,
+            paddingVertical: 8,
             paddingHorizontal: 22,
         },
         word: {
@@ -18,6 +19,7 @@ const useStylesItemWord = () => {
         containerButtonFav: {
             height: '100%',
             paddingHorizontal: 10,
+            paddingVertical: 10,
         }
     })
     

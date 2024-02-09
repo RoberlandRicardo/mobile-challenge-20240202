@@ -5,12 +5,15 @@ import useStylesItemWord from "./styles";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DISABLED_COLOR, YELLOW_COLOR } from "../../styles/colors";
 import useViewModelItemWord from "./view.model";
+import Animated from "react-native-reanimated";
+import { memo } from "react";
 
-export default function ItemWord({word, favorite, index}: ItemWordProps) {
+function ItemWord({word, favorite, index}: ItemWordProps) {
 
     const { styles } = useStylesItemWord();
 
-    const { navigateDetailsWord, insertItemFavorites, removeItemFavorites } = useViewModelItemWord({word, favorite, index});
+    const { navigateDetailsWord, insertItemFavorites, removeItemFavorites, 
+        runFavAnimation, animatedStylesFav } = useViewModelItemWord({word, favorite, index});
 
     return (
         <TouchableHighlight 
@@ -23,6 +26,7 @@ export default function ItemWord({word, favorite, index}: ItemWordProps) {
                     {word}
                 </Text>
                 <TouchableWithoutFeedback onPress={() => {
+                    runFavAnimation();
                     if (favorite)
                         removeItemFavorites({
                             index,
@@ -34,16 +38,22 @@ export default function ItemWord({word, favorite, index}: ItemWordProps) {
                             word,
                         })
                 }} >
-                    <View style={styles.containerButtonFav}>
+                    <Animated.View 
+                        style={[
+                            styles.containerButtonFav,
+                            animatedStylesFav,
+                        ]}>
                         <Icon 
                             name='star' 
                             size={20}
                             solid={favorite}
                             color={favorite ? YELLOW_COLOR : DISABLED_COLOR}
                         />
-                    </View>
+                    </Animated.View>
                 </TouchableWithoutFeedback>
             </View>
         </TouchableHighlight>
     )
 }
+
+export default memo(ItemWord);

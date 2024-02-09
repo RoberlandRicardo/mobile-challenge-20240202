@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { onValue, ref,  } from "firebase/database";
 import { WordDetails, WordEntitie, WordFavorite } from "../../../@types/entities";
 import * as data from '../../../database/words_dictionary_parsed.json';
+import { getHistoricoDB, insertHistoricoDB } from "../../../database/controller/controllerHistorico";
 
 interface HomeContextProps  {
     favorites: Array<WordFavorite>,
@@ -9,7 +10,8 @@ interface HomeContextProps  {
     removeItemFavorites: (arg: WordFavorite) => any,
     history: Array<WordDetails>,
     insertItemHistory: (arg: WordDetails) => any,
-    showedWords: Array<WordEntitie>
+    showedWords: Array<WordEntitie>,
+    setIndexPagination: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface ProviderProps {
@@ -23,6 +25,7 @@ export const HomeContext = React.createContext<HomeContextProps >({
     history: [],
     insertItemHistory: (arg: WordDetails) => {},
     showedWords: [],
+    setIndexPagination: () => {}
 });
 
 function HomeContextProvider({children}: ProviderProps) {
@@ -33,9 +36,26 @@ function HomeContextProvider({children}: ProviderProps) {
     const [indexPagination, setIndexPagination] = useState<number>(0);
 
     useEffect(() => {
+        restoreHistory();
+    }, [])
+
+    useEffect(() => {
         updateListWords();
 
     }, [indexPagination])
+
+    async function restoreHistory() {
+        let newHistorico = await getHistoricoDB();
+        let sortedHistory = newHistorico.sort((a, b) => {
+            if (!a.dateAccess || !b.dateAccess) return 0;
+            if (a.dateAccess?.getTime() > b.dateAccess?.getTime()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        })
+        setHistory(sortedHistory);
+    }
 
     function updateListWords() {
         let auxShowedWord:Array<WordEntitie> = [];
@@ -57,7 +77,7 @@ function HomeContextProvider({children}: ProviderProps) {
         ])
     }
 
-    async function insertItemFavorites(fav: WordFavorite) {
+    function insertItemFavorites(fav: WordFavorite) {
         if (showedWords.length > fav.index)
             showedWords[fav.index] = {
                 word: fav.word,
@@ -68,7 +88,7 @@ function HomeContextProvider({children}: ProviderProps) {
         
     }
 
-    async function removeItemFavorites(rmFav: WordFavorite) {
+    function removeItemFavorites(rmFav: WordFavorite) {
         let index = favorites.findIndex((fav) => fav.word == rmFav.word);
         if (index == -1) return;
         if (showedWords.length > rmFav.index)
@@ -82,11 +102,14 @@ function HomeContextProvider({children}: ProviderProps) {
         
     }
     
-    async function insertItemHistory(item: WordDetails) {
-        if (history.findIndex((word) => word.word == item.word) != -1) return;
-        history.push(item);
+    function insertItemHistory(item: WordDetails) {
+        let indexOldHist = history.findIndex((word) => word.word == item.word);
+        if (indexOldHist != -1) {
+            history.splice(indexOldHist, 1)
+        };
+        history.unshift(item);
         setHistory([...history])
-        // insertItemHistory(item);
+        insertHistoricoDB(item);
     }
 
     const valueProvider = {
@@ -96,6 +119,7 @@ function HomeContextProvider({children}: ProviderProps) {
         history,
         insertItemHistory,
         showedWords,
+        setIndexPagination,
     }
 
     return (

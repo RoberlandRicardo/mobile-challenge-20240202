@@ -11,7 +11,9 @@ export type WordEntitie = {
 
 export type WordDetails = {
     word: string,
-    phonetic: string,
+    index: number,
+    favorite: boolean,
+    phonetic?: string,
     phonetics: Array<{
         text: string,
         audio: string | undefined
@@ -25,5 +27,6 @@ export type WordDetails = {
             synonyms: Array<string>,
             antonyms: Array<string>
         }>
-    }>
+    }>,
+    dateAccess?: Date
 }

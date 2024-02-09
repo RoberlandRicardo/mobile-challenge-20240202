@@ -1,7 +1,7 @@
 import SQLite, { SQLiteDatabase } from 'react-native-sqlite-storage';
 import { tables } from './model';
 
-const dbName = "mpvistoria.db";
+const dbName = "mobile-challenge2024.db";
 
 class InternalDatabase {
 

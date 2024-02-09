@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native"
-import { BACKGROUND_COLOR, COMPONENT_COLOR, FONT_ALTERNATIV_COLOR, FONT_COLOR, YELLOW_COLOR } from "../../styles/colors";
+import { BACKGROUND_COLOR, COMPONENT_COLOR, FONT_ALTERNATIV_COLOR, FONT_COLOR, PLACEHOLDER_COLOR, YELLOW_COLOR } from "../../styles/colors";
 
 const useStylesDetailsWord = () => {
 
@@ -40,8 +40,30 @@ const useStylesDetailsWord = () => {
         },
         titleMeanings: {
             color: FONT_COLOR,
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: '600'
+        },
+        containerTypeWord: {
+            marginTop: 20,
+            marginBottom: 5,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+        },
+        dot: {
+            width: 5,
+            height: 5,
+            borderRadius: 10,
+            backgroundColor: PLACEHOLDER_COLOR,
+        },
+        typeWord: {
+            color: PLACEHOLDER_COLOR,
+            fontSize: 14,
+            fontWeight: '400',
+        },
+        definition: {
+            color: FONT_COLOR,
+            fontSize: 16,
         },
         containerMeanings: {
             width: '100%',

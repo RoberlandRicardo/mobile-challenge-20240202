@@ -25,7 +25,7 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                     {word.word}
                 </Text>
                 <Text style={styles.phonetic}>
-                    {word.phonetic}
+                    {word.phonetic ? word.phonetic : "No phonetics found"}
                 </Text>
                 <TouchableWithoutFeedback>
                     <View style={styles.containerButtonIcon}>
@@ -46,6 +46,11 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                         return (
                             <View style={styles.containerItemMeaning}>
                                 <Text style={styles.titleMeanings} >{`Meaning #${index + 1}`}</Text>
+                                <View style={styles.containerTypeWord}>
+                                    <View style={styles.dot} />
+                                    <Text style={styles.typeWord}>{item.partOfSpeech + ':'}</Text>
+                                </View>
+                                <Text style={styles.definition} >{item.definitions[0].definition}</Text>
                             </View>
                         )
                     }}
