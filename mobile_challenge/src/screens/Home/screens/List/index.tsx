@@ -5,7 +5,7 @@ import useViewModelList from "./view.model";
 import ItemWord from "../../../../components/ItemWord";
 import Header from "../../../../components/Header";
 import { useCallback, useContext } from "react";
-import { HomeContext } from "../../stores/homeContext";
+import { HomeContext } from "../../../../stores/homeContext";
 
 const List: React.FC<ListNavProps> = ({navigation, route}: ListNavProps) => {
 

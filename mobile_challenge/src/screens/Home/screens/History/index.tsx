@@ -3,7 +3,7 @@ import { HistoryNavProps } from "./model"
 import Header from "../../../../components/Header";
 import useStylesHistory from "./styles";
 import { useContext } from "react";
-import { HomeContext } from "../../stores/homeContext";
+import { HomeContext } from "../../../../stores/homeContext";
 import ItemWord from "../../../../components/ItemWord";
 
 const History: React.FC<HistoryNavProps> = ({navigation, route}: HistoryNavProps) => {
@@ -24,7 +24,8 @@ const History: React.FC<HistoryNavProps> = ({navigation, route}: HistoryNavProps
                         <ItemWord 
                             word={item.word}
                             favorite={false}
-                            index={index} />
+                            index={index}
+                            date={item.dateAccess} />
                     )
                 }}
                 

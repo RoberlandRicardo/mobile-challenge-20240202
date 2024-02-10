@@ -5,7 +5,7 @@ import List from "./screens/List";
 import TopBar from "../../components/TopBar";
 import History from "./screens/History";
 import Favorites from "./screens/Favorites";
-import HomeContextProvider from "./stores/homeContext";
+import HomeContextProvider from "../../stores/homeContext";
 
 const Tab = createMaterialTopTabNavigator<HomeTabNavProps>();
 
@@ -21,9 +21,8 @@ const HomeTabs: React.FC<HomeNavProps> = ({navigation, route}: HomeNavProps) => 
 
 const Home: React.FC<HomeNavProps> = (props: HomeNavProps) => {
     return (
-        <HomeContextProvider>
+        
             <HomeTabs {...props} />
-        </HomeContextProvider>
     )
 }
 

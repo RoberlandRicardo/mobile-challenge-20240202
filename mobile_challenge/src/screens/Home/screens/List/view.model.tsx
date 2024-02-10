@@ -1,7 +1,7 @@
 import { onValue, ref } from "firebase/database";
 import { useContext, useEffect, useState } from "react";
 import { WordEntitie } from "../../../../@types/entities";
-import { HomeContext } from "../../stores/homeContext";
+import { HomeContext } from "../../../../stores/homeContext";
 
 const useViewModelList = () => {
 

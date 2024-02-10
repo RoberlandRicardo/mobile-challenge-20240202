@@ -8,16 +8,16 @@ import useViewModelItemWord from "./view.model";
 import Animated from "react-native-reanimated";
 import { memo } from "react";
 
-function ItemWord({word, favorite, index}: ItemWordProps) {
+function ItemWord({word, favorite, index, date}: ItemWordProps) {
 
     const { styles } = useStylesItemWord();
 
     const { navigateDetailsWord, insertItemFavorites, removeItemFavorites, 
-        runFavAnimation, animatedStylesFav } = useViewModelItemWord({word, favorite, index});
+        runFavAnimation, animatedStylesFav, returnDate } = useViewModelItemWord({word, favorite, index});
 
     return (
         <TouchableHighlight 
-            onPress={() => navigateDetailsWord()}
+            onPress={() => navigateDetailsWord({word, favorite, index})}
             activeOpacity={0.8}
             underlayColor={"#e0e0e0"}
             >
@@ -38,6 +38,9 @@ function ItemWord({word, favorite, index}: ItemWordProps) {
                             word,
                         })
                 }} >
+                    {date ?
+                        <Text style={styles.dateAccess} >{returnDate(date)}</Text>
+                    :
                     <Animated.View 
                         style={[
                             styles.containerButtonFav,
@@ -49,7 +52,7 @@ function ItemWord({word, favorite, index}: ItemWordProps) {
                             solid={favorite}
                             color={favorite ? YELLOW_COLOR : DISABLED_COLOR}
                         />
-                    </Animated.View>
+                    </Animated.View>}
                 </TouchableWithoutFeedback>
             </View>
         </TouchableHighlight>

@@ -4,51 +4,16 @@ import { ItemWordProps } from "./model";
 import useGetDetailsWord from "../../api/useGetDetailsWord";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { PrivateScreensParams } from "../../routes/privateScreens";
-import { HomeContext } from "../../screens/Home/stores/homeContext";
+import { HomeContext } from "../../stores/homeContext";
 import { useAnimatedStyle, useSharedValue, withDecay, withSequence, withSpring, withTiming } from "react-native-reanimated";
 import { ToastAndroid } from "react-native";
 
 const useViewModelItemWord = ({word, favorite, index}: ItemWordProps) => {
 
-    const { navigate } = useNavigation<NavigationProp<PrivateScreensParams>>();
-
-    const { getDetailsWord } = useGetDetailsWord();
-
-    const { insertItemHistory, insertItemFavorites, removeItemFavorites, history } = useContext(HomeContext);
+    const { insertItemFavorites, removeItemFavorites, navigateDetailsWord } = useContext(HomeContext);
 
     const favAnimationScale = useSharedValue(1);
     const favAnimationRotate = useSharedValue(0);
-
-    async function navigateDetailsWord() {
-
-        let indexOldHist =  history.findIndex((historyWord) => historyWord.word == word)
-        if (indexOldHist != -1) {
-            
-            let auxHistority = {...history[indexOldHist]};
-            auxHistority.dateAccess = undefined;
-            insertItemHistory(auxHistority);
-            navigate('DetailsWord', {
-                word: auxHistority
-            });
-        }
-
-        const response = await getDetailsWord(word);
-
-        if (!response) {
-
-        } else if (response?.status >= 200 && response?.status < 300) {
-            insertItemHistory({
-                ...response.data[0],
-                index: index,
-                favorite: favorite,
-            });
-            navigate('DetailsWord', {
-                word: response.data[0]
-            });
-        } else {
-            ToastAndroid.showWithGravity("Não encontramos uma definição para essa palavra", 6000, ToastAndroid.CENTER,)
-        }
-    }
 
     function runFavAnimation() {
         favAnimationScale.value = withSequence(
@@ -72,12 +37,49 @@ const useViewModelItemWord = ({word, favorite, index}: ItemWordProps) => {
         }
     ));
 
+    function returnDate(date: Date) {
+
+
+        let day = '';
+        if (date.getDate() < 10) {
+            day = '0' + date.getDate()
+        } else {
+            day = '' + date.getDate()
+        }
+
+        let month = '';
+        if ((date.getMonth()+1) < 10) {
+            month = '0' + (date.getMonth()+1)
+        } else {
+            month = '' + (date.getMonth()+1)
+        }
+
+        let hour = '';
+        if ((date.getHours()) < 10) {
+            hour = '0' + (date.getHours())
+        } else {
+            hour = '' + (date.getHours())
+        }
+
+        let minute = '';
+        if ((date.getMinutes()) < 10) {
+            minute = '0' + (date.getMinutes())
+        } else {
+            minute = '' + (date.getMinutes())
+        }
+
+        let stringReturn = day + '/' + month + '/' + date.getFullYear() + ' '
+            + hour + 'h' + minute;
+        return stringReturn
+    }
+
     return {
         navigateDetailsWord,
         insertItemFavorites,
         removeItemFavorites,
         runFavAnimation,
         animatedStylesFav,
+        returnDate,
     }
 };
 

@@ -1,8 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { onValue, ref,  } from "firebase/database";
-import { WordDetails, WordEntitie, WordFavorite } from "../../../@types/entities";
-import * as data from '../../../database/words_dictionary_parsed.json';
-import { getHistoricoDB, insertHistoricoDB } from "../../../database/controller/controllerHistorico";
+import { WordDetails, WordEntitie, WordFavorite } from "../@types/entities";
+import * as data from '../database/words_dictionary_parsed.json';
+import { getHistoricoDB, insertHistoricoDB } from "../database/controller/controllerHistorico";
+import useGetDetailsWord from "../api/useGetDetailsWord";
+import { ItemWordProps } from "../components/ItemWord/model";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { PrivateScreensParams } from "../routes/privateScreens";
+import { ToastAndroid } from "react-native";
 
 interface HomeContextProps  {
     favorites: Array<WordFavorite>,
@@ -12,6 +17,7 @@ interface HomeContextProps  {
     insertItemHistory: (arg: WordDetails) => any,
     showedWords: Array<WordEntitie>,
     setIndexPagination: React.Dispatch<React.SetStateAction<number>>
+    navigateDetailsWord:  (arg: ItemWordProps) => any,
 }
 
 interface ProviderProps {
@@ -25,10 +31,15 @@ export const HomeContext = React.createContext<HomeContextProps >({
     history: [],
     insertItemHistory: (arg: WordDetails) => {},
     showedWords: [],
-    setIndexPagination: () => {}
+    setIndexPagination: () => {},
+    navigateDetailsWord: (arg: ItemWordProps) => {},
 });
 
 function HomeContextProvider({children}: ProviderProps) {
+
+    const { getDetailsWord } = useGetDetailsWord();
+    
+    const { navigate } = useNavigation<NavigationProp<PrivateScreensParams>>();
 
     const [favorites, setFavorites] = useState<Array<WordFavorite>>([]);
     const [history, setHistory] = useState<Array<WordDetails>>([]);
@@ -113,6 +124,41 @@ function HomeContextProvider({children}: ProviderProps) {
         insertHistoricoDB(item);
     }
 
+    async function navigateDetailsWord({word, favorite, index}: ItemWordProps) {
+
+        let indexOldHist =  history.findIndex((historyWord) => historyWord.word == word)
+        if (indexOldHist != -1) {
+            
+            let auxHistority = {...history[indexOldHist]};
+            auxHistority.dateAccess = undefined;
+            insertItemHistory(auxHistority);
+            navigate('DetailsWord', {
+                word: auxHistority
+            });
+        }
+
+        const response = await getDetailsWord(word);
+
+        if (!response) {
+
+        } else if (response?.status >= 200 && response?.status < 300) {
+            insertItemHistory({
+                ...response.data[0],
+                index: index,
+                favorite: favorite,
+            });
+            navigate('DetailsWord', {
+                word: {
+                    ...response.data[0],
+                    index: index,
+                    favorite: favorite,
+                }
+            });
+        } else {
+            ToastAndroid.showWithGravity("Não encontramos uma definição para a palavra: " + word, 6000, ToastAndroid.CENTER,)
+        }
+    }
+
     const valueProvider = {
         favorites,
         insertItemFavorites,
@@ -121,6 +167,7 @@ function HomeContextProvider({children}: ProviderProps) {
         insertItemHistory,
         showedWords,
         setIndexPagination,
+        navigateDetailsWord,
     }
 
     return (

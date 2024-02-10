@@ -16,7 +16,8 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
 
     const { styles } = useStylesDetailsWord();
 
-    const { showSwipeLeft, setShowSwipeLeft, animatedStylesSwipe } = useViewModelDetailsWord({navigation, route});
+    const { showSwipeLeft, setShowSwipeLeft, animatedStylesSwipe, 
+        navigateNext, navigatePrevious } = useViewModelDetailsWord({navigation, route});
 
     return (
         <View style={styles.container}>
@@ -78,10 +79,10 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                 />
             </View>
             <View style={styles.containerActions}>
-                <CustomButton onPress={() => {}}>
+                <CustomButton onPress={() => navigatePrevious()}>
                     <Text style={styles.textButton}>Previous</Text>
                 </CustomButton>
-                <CustomButton onPress={() => {}}>
+                <CustomButton onPress={() => navigateNext()}>
                     <Text style={styles.textButton}>Next</Text>
                 </CustomButton>
             </View>
