@@ -36,7 +36,7 @@ export async function insertHistoricoDB(wordDetails: WordDetails) {
         phonetics: JSON.stringify(wordDetails.phonetics).split(`"`).join(`""`),
         origin: wordDetails.origin,
         meanings: JSON.stringify(wordDetails.meanings).split(`"`).join(`""`),
-        data: Date().toString(),
+        data: wordDetails.dateAccess?.toString(),
     };
 
     return await InternalDatabase.getDBConnection().then(db => db.executeSql(`

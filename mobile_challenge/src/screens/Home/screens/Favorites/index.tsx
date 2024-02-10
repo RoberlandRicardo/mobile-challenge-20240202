@@ -24,7 +24,7 @@ const Favorites: React.FC<FavoritesNavProps> = ({navigation, route}: FavoritesNa
                         <ItemWord 
                             word={item.word}
                             favorite={true}
-                            index={index} />
+                            index={item.index} />
                     )
                 }}
                 
