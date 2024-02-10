@@ -30,3 +30,10 @@ export type WordDetails = {
     }>,
     dateAccess?: Date
 }
+
+export type User = {
+    id: number,
+    name: string,
+    senha: string,
+    favorites: Array<WordFavorite>
+}
