@@ -21,7 +21,7 @@ fs.readFile('./words_dictionary.json', 'utf-8', (err, data) => {
         
         newWordArray.push(item);
         quantSection++;
-        if (quantSection == 99) {
+        if (quantSection == 50) {
             allWordsArray.push(newWordArray);
             newWordArray = [];
             quantSection = 0;

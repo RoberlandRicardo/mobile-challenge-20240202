@@ -44,7 +44,7 @@ const useStylesDetailsWord = () => {
             fontWeight: '600'
         },
         containerTypeWord: {
-            marginTop: 20,
+            marginTop: 10,
             marginBottom: 5,
             flexDirection: 'row',
             alignItems: 'center',
@@ -64,6 +64,19 @@ const useStylesDetailsWord = () => {
         definition: {
             color: FONT_COLOR,
             fontSize: 16,
+        },
+        swipeLeft: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 4,
+            position: 'absolute',
+            bottom: 10,
+            width: '100%',
+        },
+        swipeLeftText: {
+            color: FONT_COLOR,
+            marginRight: 4,
         },
         containerMeanings: {
             width: '100%',

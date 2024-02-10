@@ -1,17 +1,22 @@
 import { FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { DetailsWordNavProps } from "./model";
+import Animated from "react-native-reanimated";
 import useStylesDetailsWord from "./styles";
 import { useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { FONT_COLOR } from "../../styles/colors";
 import CustomButton from "../../components/CustomButton";
+import Tts from "react-native-tts";
+import useViewModelDetailsWord from "./view.model";
 
 const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: DetailsWordNavProps) => {
 
     const { word } = route.params;
 
     const { styles } = useStylesDetailsWord();
+
+    const { showSwipeLeft, setShowSwipeLeft, animatedStylesSwipe } = useViewModelDetailsWord({navigation, route});
 
     return (
         <View style={styles.container}>
@@ -27,7 +32,9 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                 <Text style={styles.phonetic}>
                     {word.phonetic ? word.phonetic : "No phonetics found"}
                 </Text>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => {
+                    Tts.speak(word.word);
+                }} >
                     <View style={styles.containerButtonIcon}>
                         <View style={{alignItems: 'center', justifyContent: 'center', width: 34, height: 34,}} >
                             <Icon name="play" size={26} color={FONT_COLOR} />
@@ -42,6 +49,7 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
+                    onScroll={() => setShowSwipeLeft(false)}
                     renderItem={({item, index}) => {
                         return (
                             <View style={styles.containerItemMeaning}>
@@ -50,7 +58,20 @@ const DetailsWord: React.FC<DetailsWordNavProps> = ({navigation, route}: Details
                                     <View style={styles.dot} />
                                     <Text style={styles.typeWord}>{item.partOfSpeech + ':'}</Text>
                                 </View>
-                                <Text style={styles.definition} >{item.definitions[0].definition}</Text>
+                                <Text numberOfLines={5} style={styles.definition} >{item.definitions[0].definition}</Text>                            
+                                {showSwipeLeft && word.meanings.length > 1 &&
+                                    <Animated.View style={[
+                                            styles.swipeLeft,
+                                            animatedStylesSwipe
+                                        ]} >
+                                        <Text style={styles.swipeLeftText}>
+                                            swipe
+                                        </Text>
+                                        <Icon name="play" size={8} color={FONT_COLOR} />
+                                        <Icon name="play" size={8} color={FONT_COLOR} />
+                                        <Icon name="play" size={8} color={FONT_COLOR} />
+                                    </Animated.View>
+                                }
                             </View>
                         )
                     }}

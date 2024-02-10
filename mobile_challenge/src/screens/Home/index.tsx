@@ -11,7 +11,7 @@ const Tab = createMaterialTopTabNavigator<HomeTabNavProps>();
 
 const HomeTabs: React.FC<HomeNavProps> = ({navigation, route}: HomeNavProps) => {
     return (
-        <Tab.Navigator tabBar={props => <TopBar {...props} />}>
+        <Tab.Navigator  tabBar={props => <TopBar {...props} />}>
             <Tab.Screen name="List" component={List} />
             <Tab.Screen name="History" component={History} />
             <Tab.Screen name="Favorites" component={Favorites} />

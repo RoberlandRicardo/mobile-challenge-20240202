@@ -59,6 +59,7 @@ function HomeContextProvider({children}: ProviderProps) {
 
     function updateListWords() {
         let auxShowedWord:Array<WordEntitie> = [];
+        
         data.allWords[indexPagination].forEach(element => {
             auxShowedWord.push({
                 word: element,
@@ -67,7 +68,7 @@ function HomeContextProvider({children}: ProviderProps) {
         });
         
         favorites.forEach((fav) => {
-            if (auxShowedWord.length + indexPagination * 100 > fav.index)
+            if (auxShowedWord.length + indexPagination * 50 > fav.index)
                 auxShowedWord[fav.index].favorite = true;
         })
 
