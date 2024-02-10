@@ -95,7 +95,7 @@ function HomeContextProvider({children}: ProviderProps) {
                 word: fav.word,
                 favorite: true,
             }
-        setShowedWords([...showedWords])
+
         favorites.push(fav);
         setFavorites([...favorites])
         
@@ -109,7 +109,7 @@ function HomeContextProvider({children}: ProviderProps) {
                 word: rmFav.word,
                 favorite: false,
             }
-        setShowedWords([...showedWords])
+
         favorites.splice(index, 1);
         setFavorites([...favorites])
         

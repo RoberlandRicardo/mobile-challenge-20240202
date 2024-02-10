@@ -12,7 +12,7 @@
 
 ### Instruções:
 
-1. Entre no repositório src
+1. Entre no repositório mobile_challenge
 2. Rode o comando **npm install** para realizar a instalação de todas os modulos
 3. Execute o comando **react-native run-android** com o emulador funcionando e agurde a instalação
 4. Execute o comando **npm install** e conecte o emulador com o servidor node.
